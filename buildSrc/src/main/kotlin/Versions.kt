@@ -1,0 +1,17 @@
+internal object Versions {
+    const val kotlin = "1.5.31"
+    const val buildTools = "7.0.3"
+    const val androidxCore = "1.7.0"
+    const val appCompat = "1.3.1"
+    const val material = "1.4.0"
+    const val constraintLayout = "2.1.1"
+    const val junit = "4.13"
+    const val okhttp = "4.9.2"
+    const val retrofit = "2.9.0"
+    const val gson = "2.8.8"
+    const val koin = "3.1.3"
+    const val coroutines = "1.5.2"
+    const val navigation = "2.3.5"
+    const val mockk = "1.12.0"
+    const val arch = "2.1.0"
+}
