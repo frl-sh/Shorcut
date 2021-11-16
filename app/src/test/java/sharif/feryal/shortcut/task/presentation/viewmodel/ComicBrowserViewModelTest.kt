@@ -210,4 +210,34 @@ class ComicBrowserViewModelTest {
 
         coVerify(timeout = 0) { comicUseCase.getComic(any()) }
     }
+
+    @Test
+    fun `when current comic is the last one, then isNextEnabled should be false`() {
+        val lastComicNumber = 5
+        simulateSettingCurrentComic(currentComicNumber = lastComicNumber, maxNumber = lastComicNumber)
+
+        assertEquals(false, viewModel.isNextEnabled.value)
+    }
+
+    @Test
+    fun `when current comic is not the last one, then isNextEnabled should be true`() {
+        simulateSettingCurrentComic(currentComicNumber = 2, maxNumber = 5)
+
+        assertEquals(true, viewModel.isNextEnabled.value)
+    }
+
+    @Test
+    fun `when current comic is the first one, then isPreviousEnabled should be false`() {
+        val firstComicNumber = 0
+        simulateSettingCurrentComic(currentComicNumber = firstComicNumber, maxNumber = 5)
+
+        assertEquals(false, viewModel.isPreviousEnabled.value)
+    }
+
+    @Test
+    fun `when current comic is not the first one, then isPreviousEnabled should be true`() {
+        simulateSettingCurrentComic(currentComicNumber = 2, maxNumber = 5)
+
+        assertEquals(true, viewModel.isPreviousEnabled.value)
+    }
 }

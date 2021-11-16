@@ -23,6 +23,14 @@ class ComicBrowserViewModel(
     val dataStatus: LiveData<DataStatus>
         get() = _dataStatus
 
+    private val _isNextEnabled = MutableLiveData<Boolean>()
+    val isNextEnabled: LiveData<Boolean>
+        get() = _isNextEnabled
+
+    private val _isPreviousEnabled = MutableLiveData<Boolean>()
+    val isPreviousEnabled: LiveData<Boolean>
+        get() = _isPreviousEnabled
+
     init {
         fetchComic()
     }
@@ -35,11 +43,17 @@ class ComicBrowserViewModel(
                     setMaxNumberIfNeeded(number, comic)
                     _comic.value = comic
                     _dataStatus.value = DataStatus.None
+                    updateNextAndPreviousAvailability(comic)
                 },
                 onFailure = {
                     _dataStatus.value = DataStatus.Failed(it)
                 })
         }
+    }
+
+    private fun updateNextAndPreviousAvailability(comic: Comic) {
+        _isNextEnabled.value = comic.number < maxComicNumber
+        _isPreviousEnabled.value = comic.number > MIN_COMIC_NUMBER
     }
 
     private fun setMaxNumberIfNeeded(number: Int?, comic: Comic) {
