@@ -31,13 +31,14 @@ android {
             isDebuggable = true
         }
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    viewBinding {
-        android.buildFeatures.viewBinding = true
     }
 
     kotlinOptions {
@@ -64,6 +65,7 @@ dependencies {
                 gson,
                 coroutinesCore,
                 coroutinesAndroid,
+                coroutinesAdapter,
                 koin
             )
         )

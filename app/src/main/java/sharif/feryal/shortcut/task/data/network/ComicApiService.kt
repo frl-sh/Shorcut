@@ -8,8 +8,8 @@ import sharif.feryal.shortcut.task.data.ComicDto
 interface ComicApiService {
 
     @GET("info.0.json")
-    suspend fun getCurrentComic(): Call<ComicDto>
+    fun getCurrentComic(): Call<ComicDto>
 
     @GET("{num}/info.0.json")
-    suspend fun getComicByNumber(@Path("num") num: Int): Call<ComicDto>
+    fun getComicByNumber(@Path("num") num: Int): Call<ComicDto>
 }

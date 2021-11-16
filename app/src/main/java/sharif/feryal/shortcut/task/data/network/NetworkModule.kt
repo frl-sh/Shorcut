@@ -1,6 +1,7 @@
 package sharif.feryal.shortcut.task.data.network
 
 import com.google.gson.Gson
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -25,15 +26,14 @@ val networkModule: Module = module {
 
     factory {
         OkHttpClient.Builder()
-            .addInterceptor {
-                get(named<HttpLoggingInterceptor>())
-            }
+            .addInterceptor(get(named<HttpLoggingInterceptor>()))
             .build()
     }
 
     single {
         Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create(get()))
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .client(get())
             .baseUrl(baseUrl)
             .build()

@@ -2,9 +2,10 @@ package sharif.feryal.shortcut.task.presentation
 
 import android.app.Application
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.context.startKoin
+import org.koin.core.context.GlobalContext.startKoin
 import sharif.feryal.shortcut.task.data.dataModule
 import sharif.feryal.shortcut.task.data.network.networkModule
+import sharif.feryal.shortcut.task.domain.domainModule
 
 class ComicApplication: Application() {
 
@@ -19,6 +20,7 @@ class ComicApplication: Application() {
             modules(
                 networkModule,
                 dataModule,
+                domainModule,
                 presentationModule
             )
         }

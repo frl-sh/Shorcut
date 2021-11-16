@@ -33,16 +33,16 @@ inline fun <V, V2> Either<V>.map(transform: (V) -> V2): Either<V2> = when (this)
 /**
  * Applies `ifSuccess` if this is a [Either.Success] or `ifFailure` if this is a [Either.Failure].
  *
- * @param ifSuccess the function to apply if this is a [Either.Success]
- * @param ifFailure the function to apply if this is a [Either.Failure]
+ * @param onSuccess the function to apply if this is a [Either.Success]
+ * @param onFailure the function to apply if this is a [Either.Failure]
  * @return the results of applying the function
  */
 inline fun <R, T> Either<T>.fold(
-    ifSuccess: (value: T) -> R,
-    ifFailure: (failure: Throwable) -> R
+    onSuccess: (value: T) -> R,
+    onFailure: (failure: Throwable) -> R
 ): R {
     return when (this) {
-        is Either.Success<T> -> ifSuccess(value)
-        is Either.Failure -> ifFailure(error)
+        is Either.Success<T> -> onSuccess(value)
+        is Either.Failure -> onFailure(error)
     }
 }

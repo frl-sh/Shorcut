@@ -10,6 +10,7 @@ object Dependencies {
     const val gson = "com.google.code.gson:gson:${Versions.gson}"
     const val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
     const val coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
+    const val coroutinesAdapter = "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:${Versions.coroutinesAdapter}"
     const val koin = "io.insert-koin:koin-android:${Versions.koin}"
 
     // UI
@@ -23,9 +24,9 @@ object Dependencies {
     // Test
     const val junit = "junit:junit:${Versions.junit}"
     const val mockk = "io.mockk:mockk:${Versions.mockk}"
-    const val koinTest = "org.koin:koin-test:${Versions.koin}"
+    const val koinTest = "io.insert-koin:koin-test:${Versions.koin}"
     const val coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
-    const val archTest = "android.arch.core:core-testing:${Versions.arch}"
+    const val archTest = "androidx.arch.core:core-testing:${Versions.arch}"
 }
 
 fun DependencyHandler.kapt(list: List<String>) {
