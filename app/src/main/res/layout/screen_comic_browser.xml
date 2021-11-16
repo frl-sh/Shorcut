@@ -19,4 +19,33 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="ComiC Title" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/prevComicButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="120dp"
+        app:layout_constraintTop_toBottomOf="@id/comicTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="@dimen/default_margin"
+        android:text="@string/previous"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/nextComicButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="120dp"
+        app:layout_constraintTop_toBottomOf="@id/comicTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="@dimen/default_margin"
+        android:text="@string/next"/>
+
+    <ProgressBar
+        android:id="@+id/comicLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -65,7 +65,7 @@ class ComicBrowserViewModel(
 
     fun previousComicRequested() {
         val previousComicNumber = (_comic.value?.number ?: MIN_COMIC_NUMBER) - 1
-        if (previousComicNumber <= MIN_COMIC_NUMBER) {
+        if (previousComicNumber < MIN_COMIC_NUMBER) {
             return
         }
         fetchComic(previousComicNumber)
@@ -73,7 +73,7 @@ class ComicBrowserViewModel(
 
     fun nextComicRequested() {
         val nextComicNumber = (_comic.value?.number ?: maxComicNumber) + 1
-        if (nextComicNumber >= maxComicNumber) {
+        if (nextComicNumber > maxComicNumber) {
             return
         }
         fetchComic(nextComicNumber)
