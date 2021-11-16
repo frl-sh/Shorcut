@@ -16,9 +16,8 @@ import sharif.feryal.shortcut.task.core.models.DataStatus
 import sharif.feryal.shortcut.task.core.models.Either
 import sharif.feryal.shortcut.task.domain.Comic
 import sharif.feryal.shortcut.task.domain.Date
-import sharif.feryal.shortcut.task.domain.repository.ComicRepository
+import sharif.feryal.shortcut.task.domain.interactor.GetComicUseCase
 import sharif.feryal.shortcut.task.util.CoroutineTestRule
-import sharif.feryal.shortcut.task.util.MockCoroutineDispatcherProvider
 import sharif.feryal.shortcut.task.util.testCoroutineDispatcher
 
 @ExperimentalCoroutinesApi
@@ -30,7 +29,7 @@ class ComicBrowserViewModelTest {
     val coroutineTestRule = CoroutineTestRule()
 
     @MockK
-    private lateinit var comicRepository: ComicRepository
+    private lateinit var comicUseCase: GetComicUseCase
 
     private val anyNumber = 0
     private val anyDate = Date("", "", "")
@@ -52,14 +51,14 @@ class ComicBrowserViewModelTest {
     }
 
     private val viewModel: ComicBrowserViewModel by lazy {
-        ComicBrowserViewModel(comicRepository, MockCoroutineDispatcherProvider)
+        ComicBrowserViewModel(comicUseCase)
     }
 
     @Test
     fun `when get currentComic, then data-status should be loading`() =
         coroutineTestRule.testDispatcher.runBlockingTest {
             val successResponse = Either.Success(mockComic)
-            coEvery { comicRepository.getCurrentComic() } coAnswers {
+            coEvery { comicUseCase.getComic() } coAnswers {
                 delay(500)
                 successResponse
             }
@@ -71,7 +70,7 @@ class ComicBrowserViewModelTest {
     fun `when get currentComic failed, then data-status should be failed`() {
         val error = Throwable()
         val failureResponse = Either.Failure(error)
-        coEvery { comicRepository.getCurrentComic() } coAnswers { failureResponse }
+        coEvery { comicUseCase.getComic() } coAnswers { failureResponse }
 
         assert(viewModel.dataStatus.value is DataStatus.Failed)
     }
@@ -79,7 +78,7 @@ class ComicBrowserViewModelTest {
     @Test
     fun `when get currentComic successfully, then Comic live-data should be updated`() {
         val successResponse = Either.Success(mockComic)
-        coEvery { comicRepository.getCurrentComic() } coAnswers { successResponse }
+        coEvery { comicUseCase.getComic() } coAnswers { successResponse }
 
         assertEquals(mockComic, viewModel.comic.value)
     }

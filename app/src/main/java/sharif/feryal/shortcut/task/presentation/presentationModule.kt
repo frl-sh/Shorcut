@@ -12,6 +12,6 @@ val presentationModule = module {
     }
 
     viewModel {
-        ComicBrowserViewModel(get(), get())
+        ComicBrowserViewModel(get())
     }
 }
