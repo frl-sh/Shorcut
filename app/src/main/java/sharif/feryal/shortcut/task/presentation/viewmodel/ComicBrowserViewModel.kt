@@ -13,7 +13,7 @@ class ComicBrowserViewModel(
     private val getComicUseCase: GetComicUseCase
 ) : BaseViewModel() {
 
-    private var comicsMaxNumber: Int = 0
+    private var maxComicNumber: Int = Int.MAX_VALUE
 
     private val _comic = MutableLiveData<Comic>()
     val comic: LiveData<Comic>
@@ -32,7 +32,7 @@ class ComicBrowserViewModel(
             _dataStatus.value = DataStatus.Loading
             getComicUseCase.getComic(number).fold(
                 onSuccess = { comic ->
-                    comicsMaxNumber = comic.number
+                    setMaxNumberIfNeeded(number, comic)
                     _comic.value = comic
                     _dataStatus.value = DataStatus.None
                 },
@@ -40,5 +40,32 @@ class ComicBrowserViewModel(
                     _dataStatus.value = DataStatus.Failed(it)
                 })
         }
+    }
+
+    private fun setMaxNumberIfNeeded(number: Int?, comic: Comic) {
+        // maxComicNumber will set just on first call which fetch currentComic
+        if (number == null) {
+            maxComicNumber = comic.number
+        }
+    }
+
+    fun previousComicRequested() {
+        val previousComicNumber = (_comic.value?.number ?: MIN_COMIC_NUMBER) - 1
+        if (previousComicNumber <= MIN_COMIC_NUMBER) {
+            return
+        }
+        fetchComic(previousComicNumber)
+    }
+
+    fun nextComicRequested() {
+        val nextComicNumber = (_comic.value?.number ?: maxComicNumber) + 1
+        if (nextComicNumber >= maxComicNumber) {
+            return
+        }
+        fetchComic(nextComicNumber)
+    }
+
+    private companion object {
+        const val MIN_COMIC_NUMBER = 0
     }
 }

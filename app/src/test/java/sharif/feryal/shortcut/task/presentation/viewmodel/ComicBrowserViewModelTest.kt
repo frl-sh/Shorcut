@@ -8,7 +8,6 @@ import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runBlockingTest
-import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -19,7 +18,6 @@ import sharif.feryal.shortcut.task.domain.Comic
 import sharif.feryal.shortcut.task.domain.Date
 import sharif.feryal.shortcut.task.domain.interactor.GetComicUseCase
 import sharif.feryal.shortcut.task.util.CoroutineTestRule
-import sharif.feryal.shortcut.task.util.testCoroutineDispatcher
 
 @ExperimentalCoroutinesApi
 class ComicBrowserViewModelTest {
@@ -44,11 +42,6 @@ class ComicBrowserViewModelTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-    }
-
-    @After
-    fun tearDown() {
-        testCoroutineDispatcher.cleanupTestCoroutines()
     }
 
     private val viewModel: ComicBrowserViewModel by lazy {
@@ -98,21 +91,22 @@ class ComicBrowserViewModelTest {
     }
 
     @Test
-    fun `when previous Comic is requested, then data-status should be loading`() {
-        coEvery { comicUseCase.getComic() } coAnswers {
-            Either.Success(mockComic)
-        }
-        val prevNumber = mockComic.number - 1
-        coEvery { comicUseCase.getComic(prevNumber) } coAnswers {
-            delay(500)
-            val previousComic = mockComic.copy(prevNumber)
-            Either.Success(previousComic)
-        }
+    fun `when previous Comic is requested, then data-status should be loading`() =
+        coroutineTestRule.testDispatcher.runBlockingTest {
+            coEvery { comicUseCase.getComic() } coAnswers {
+                Either.Success(mockComic)
+            }
+            val prevNumber = mockComic.number - 1
+            coEvery { comicUseCase.getComic(prevNumber) } coAnswers {
+                delay(500)
+                val previousComic = mockComic.copy(prevNumber)
+                Either.Success(previousComic)
+            }
 
-        viewModel.previousComicRequested()
+            viewModel.previousComicRequested()
 
-        assert(viewModel.dataStatus.value is DataStatus.Loading)
-    }
+            assert(viewModel.dataStatus.value is DataStatus.Loading)
+        }
 
     @Test
     fun `when previous Comic is requested, and it failed, then data-status should be failed`() {
@@ -159,19 +153,20 @@ class ComicBrowserViewModelTest {
     }
 
     @Test
-    fun `when next Comic is requested, then data-status should be loading`() {
-        val currentNumber = 2
-        simulateSettingCurrentComic(currentComicNumber = currentNumber, maxNumber = 5)
-        val nextComic = mockComic.copy(number = currentNumber + 1)
-        coEvery { comicUseCase.getComic(any()) } coAnswers {
-            delay(500)
-            Either.Success(nextComic)
+    fun `when next Comic is requested, then data-status should be loading`() = coroutineTestRule
+        .testDispatcher.runBlockingTest {
+            val currentNumber = 2
+            simulateSettingCurrentComic(currentComicNumber = currentNumber, maxNumber = 5)
+            val nextComic = mockComic.copy(number = currentNumber + 1)
+            coEvery { comicUseCase.getComic(any()) } coAnswers {
+                delay(500)
+                Either.Success(nextComic)
+            }
+
+            viewModel.nextComicRequested()
+
+            assert(viewModel.dataStatus.value is DataStatus.Loading)
         }
-
-        viewModel.nextComicRequested()
-
-        assert(viewModel.dataStatus.value is DataStatus.Loading)
-    }
 
     @Test
     fun `when next Comic is requested, and it failed, then data-status should be failed`() {
