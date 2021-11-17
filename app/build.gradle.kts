@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("android.extensions")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -31,13 +32,14 @@ android {
             isDebuggable = true
         }
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    viewBinding {
-        android.buildFeatures.viewBinding = true
     }
 
     kotlinOptions {
@@ -56,7 +58,7 @@ dependencies {
                 constraintLayout,
                 navigationFragment,
                 navigationUi,
-
+                glide,
                 okhttp,
                 loggingInterceptor,
                 retrofit,
@@ -64,9 +66,12 @@ dependencies {
                 gson,
                 coroutinesCore,
                 coroutinesAndroid,
+                coroutinesAdapter,
                 koin
             )
         )
+
+        annotationProcessor(glideAnnotation)
 
         testImplementation(
             listOf(

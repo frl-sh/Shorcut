@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ComiC</string>
+    <string name="failure_message">something is wrong</string>
+    <string name="comic_date">Date: %s/%s/%s</string>
 </resources>
