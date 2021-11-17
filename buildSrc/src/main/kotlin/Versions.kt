@@ -15,4 +15,5 @@ internal object Versions {
     const val navigation = "2.3.5"
     const val mockk = "1.12.0"
     const val arch = "2.1.0"
+    const val glide = "4.12.0"
 }

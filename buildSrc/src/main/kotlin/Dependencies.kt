@@ -20,6 +20,8 @@ object Dependencies {
     const val material = "com.google.android.material:material:${Versions.material}"
     const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
     const val navigationUi = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
+    const val glide = "com.github.bumptech.glide:glide:${Versions.glide}"
+    const val glideAnnotation = "com.github.bumptech.glide:compiler:${Versions.glide}"
 
     // Test
     const val junit = "junit:junit:${Versions.junit}"

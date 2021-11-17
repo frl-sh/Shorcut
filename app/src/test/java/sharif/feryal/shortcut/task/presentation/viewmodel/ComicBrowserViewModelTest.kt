@@ -12,8 +12,8 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import sharif.feryal.shortcut.task.core.models.DataStatus
 import sharif.feryal.shortcut.task.core.models.Either
+import sharif.feryal.shortcut.task.core.models.LoadableData
 import sharif.feryal.shortcut.task.domain.Comic
 import sharif.feryal.shortcut.task.domain.Date
 import sharif.feryal.shortcut.task.domain.interactor.GetComicUseCase
@@ -39,13 +39,17 @@ class ComicBrowserViewModelTest {
         anyDate
     )
 
+    private val viewModel: ComicBrowserViewModel by lazy {
+        ComicBrowserViewModel(comicUseCase)
+    }
+
+    private val dataStatusValue by lazy {
+        (viewModel.dataStatus.value as? LoadableData.Loaded)?.data
+    }
+
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-    }
-
-    private val viewModel: ComicBrowserViewModel by lazy {
-        ComicBrowserViewModel(comicUseCase)
     }
 
     private fun simulateSettingCurrentComic(currentComicNumber: Int, maxNumber: Int) {
@@ -70,24 +74,24 @@ class ComicBrowserViewModelTest {
                 successResponse
             }
 
-            assert(viewModel.dataStatus.value is DataStatus.Loading)
+            assert(viewModel.dataStatus.value is LoadableData.Loading)
         }
 
     @Test
-    fun `when get currentComic failed, then data-status should be failed`() {
+    fun `when get currentComic failed, then failure state should be updated`() {
         val error = Throwable()
         val failureResponse = Either.Failure(error)
         coEvery { comicUseCase.getComic() } coAnswers { failureResponse }
 
-        assert(viewModel.dataStatus.value is DataStatus.Failed)
+        assertEquals(error, viewModel.failure.value?.throwable)
     }
 
     @Test
-    fun `when get currentComic successfully, then Comic live-data should be updated`() {
+    fun `when get currentComic successfully, then data-status value should be updated`() {
         val successResponse = Either.Success(mockComic)
         coEvery { comicUseCase.getComic() } coAnswers { successResponse }
 
-        assertEquals(mockComic, viewModel.comic.value)
+        assertEquals(mockComic, dataStatusValue)
     }
 
     @Test
@@ -105,11 +109,11 @@ class ComicBrowserViewModelTest {
 
             viewModel.previousComicRequested()
 
-            assert(viewModel.dataStatus.value is DataStatus.Loading)
+            assert(viewModel.dataStatus.value is LoadableData.Loading)
         }
 
     @Test
-    fun `when previous Comic is requested, and it failed, then data-status should be failed`() {
+    fun `when previous Comic is requested, and it failed, then failure state should be updated`() {
         coEvery { comicUseCase.getComic() } coAnswers {
             Either.Success(mockComic)
         }
@@ -121,11 +125,11 @@ class ComicBrowserViewModelTest {
 
         viewModel.previousComicRequested()
 
-        assert(viewModel.dataStatus.value is DataStatus.Failed)
+        assertEquals(error, viewModel.failure.value?.throwable)
     }
 
     @Test
-    fun `when get previous Comic successfully, then Comic live-data should be updated`() {
+    fun `when get previous Comic successfully, then data-status value should be updated`() {
         coEvery { comicUseCase.getComic() } coAnswers {
             Either.Success(mockComic)
         }
@@ -137,7 +141,7 @@ class ComicBrowserViewModelTest {
 
         viewModel.previousComicRequested()
 
-        assertEquals(previousComic, viewModel.comic.value)
+        assertEquals(previousComic, dataStatusValue)
     }
 
     @Test
@@ -165,14 +169,13 @@ class ComicBrowserViewModelTest {
 
             viewModel.nextComicRequested()
 
-            assert(viewModel.dataStatus.value is DataStatus.Loading)
+            assert(viewModel.dataStatus.value is LoadableData.Loading)
         }
 
     @Test
-    fun `when next Comic is requested, and it failed, then data-status should be failed`() {
+    fun `when next Comic is requested, and it failed, then failure status should be updated`() {
         val currentNumber = 2
         simulateSettingCurrentComic(currentComicNumber = currentNumber, maxNumber = 5)
-        val nextComic = mockComic.copy(number = currentNumber + 1)
         val error = Throwable()
         coEvery { comicUseCase.getComic(any()) } coAnswers {
             Either.Failure(error)
@@ -180,11 +183,11 @@ class ComicBrowserViewModelTest {
 
         viewModel.nextComicRequested()
 
-        assert(viewModel.dataStatus.value is DataStatus.Failed)
+        assertEquals(error, viewModel.failure.value?.throwable)
     }
 
     @Test
-    fun `when get next Comic successfully, then Comic live-data should be updated`() {
+    fun `when get next Comic successfully, then data-status value should be updated`() {
         val currentNumber = 2
         simulateSettingCurrentComic(currentComicNumber = currentNumber, maxNumber = 5)
         val nextComic = mockComic.copy(number = currentNumber + 1)
@@ -194,7 +197,7 @@ class ComicBrowserViewModelTest {
 
         viewModel.nextComicRequested()
 
-        assertEquals(nextComic, viewModel.comic.value)
+        assertEquals(nextComic, dataStatusValue)
     }
 
     @Test

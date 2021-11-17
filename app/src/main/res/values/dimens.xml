@@ -2,4 +2,10 @@
 <resources>
     <dimen name="default_margin">16dp</dimen>
     <dimen name="text_size_header">32sp</dimen>
+    <dimen name="text_size_title">24sp</dimen>
+    <dimen name="comic_image_height">400dp</dimen>
+    <dimen name="comic_button_width">40dp</dimen>
+    <dimen name="comic_button_height">80dp</dimen>
+    <dimen name="default_radius">5dp</dimen>
+    <dimen name="screen_bottom_margin">24dp</dimen>
 </resources>

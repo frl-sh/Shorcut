@@ -8,5 +8,7 @@ fun ComicDto.toComic() = Comic(
     number,
     title,
     imageUrl,
-    Date(year, month, day)
+    Date(year, month, day),
+    alt,
+    transcript
 )

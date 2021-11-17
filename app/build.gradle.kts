@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("android.extensions")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -57,7 +58,7 @@ dependencies {
                 constraintLayout,
                 navigationFragment,
                 navigationUi,
-
+                glide,
                 okhttp,
                 loggingInterceptor,
                 retrofit,
@@ -69,6 +70,8 @@ dependencies {
                 koin
             )
         )
+
+        annotationProcessor(glideAnnotation)
 
         testImplementation(
             listOf(

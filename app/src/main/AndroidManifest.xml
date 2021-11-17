@@ -14,6 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ComiC">
         <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.MainActivity"
             android:exported="true">
             <intent-filter>

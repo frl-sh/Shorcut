@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:shape="rectangle">
+
+    <solid android:color="@color/comic_button_background" />
+    <corners
+        android:bottomLeftRadius="@dimen/default_radius"
+        android:topLeftRadius="@dimen/default_radius" />
+    <size
+        tools:height="@dimen/comic_button_height"
+        tools:width="@dimen/comic_button_width" />
+</shape>
