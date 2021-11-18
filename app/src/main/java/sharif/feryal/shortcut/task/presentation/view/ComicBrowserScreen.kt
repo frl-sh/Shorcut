@@ -1,9 +1,12 @@
 package sharif.feryal.shortcut.task.presentation.view
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isInvisible
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE
@@ -18,12 +21,37 @@ import sharif.feryal.shortcut.task.core.models.LoadableData
 import sharif.feryal.shortcut.task.databinding.ScreenComicBrowserBinding
 import sharif.feryal.shortcut.task.domain.Comic
 import sharif.feryal.shortcut.task.presentation.viewmodel.ComicBrowserViewModel
+import androidx.core.content.ContextCompat.getSystemService
+import kotlinx.coroutines.*
+
 
 class ComicBrowserScreen : BaseFragment() {
     private var _binding: ScreenComicBrowserBinding? = null
     private val binding get() = requireNotNull(_binding)
 
+    private val job = Job()
+    private val viewScope = CoroutineScope(Dispatchers.Main + job)
+
     private val viewModel: ComicBrowserViewModel by viewModel()
+
+    private var snackbar: Snackbar? = null
+
+    private var textDebounceJob: Job? = null
+    private val comicSearchTextWatcher: TextWatcher = object : TextWatcher {
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+        override fun afterTextChanged(editable: Editable) {
+            textDebounceJob?.cancel()
+            editable.toString().toIntOrNull()?.let { comicNumberQuery ->
+                textDebounceJob = viewScope.launch {
+                    delay(SearchDebounceDelay)
+                    viewModel.searchQueryRequested(comicNumberQuery)
+                }
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,11 +73,15 @@ class ComicBrowserScreen : BaseFragment() {
         with(binding) {
             nextComicButton.setOnClickListener {
                 viewModel.nextComicRequested()
+                clearSearchFocus()
             }
 
             prevComicButton.setOnClickListener {
                 viewModel.previousComicRequested()
+                clearSearchFocus()
             }
+
+            comicBrowserToolbar.toolbarSearchText.addTextChangedListener(comicSearchTextWatcher)
         }
     }
 
@@ -67,6 +99,7 @@ class ComicBrowserScreen : BaseFragment() {
                 with(binding) {
                     comicLoading.isInvisible = status !is LoadableData.Loading
                     (status as? LoadableData.Loaded)?.data?.let { comic ->
+                        snackbar?.dismiss()
                         setComicData(comic)
                     }
                 }
@@ -75,7 +108,7 @@ class ComicBrowserScreen : BaseFragment() {
             failure.subscribe { failure ->
                 val retryObject = failure.retry
                 val messageDuration = if (retryObject == null) LENGTH_SHORT else LENGTH_INDEFINITE
-                Snackbar.make(
+                snackbar = Snackbar.make(
                     binding.root,
                     failure.throwable.message ?: getString(R.string.failure_message),
                     messageDuration
@@ -85,7 +118,8 @@ class ComicBrowserScreen : BaseFragment() {
                             viewModel.retryRequested(retry.comicNumber)
                         }
                     }
-                }.show()
+                    show()
+                }
             }
         }
     }
@@ -107,12 +141,14 @@ class ComicBrowserScreen : BaseFragment() {
 
     private fun ScreenComicBrowserBinding.setComicListeners(comic: Comic) {
         comicImage.setOnClickListener {
+            clearSearchFocus()
             findNavController().navigate(
                 R.id.comicDescriptionScreen,
                 ComicDescriptionScreenArgs(comic).toBundle()
             )
         }
         comicShareButton.setOnClickListener {
+            clearSearchFocus()
             requireContext().openUrl(
                 getString(R.string.comic_website_url, comic.number)
             ).takeIf { intent -> intent == null }?.let {
@@ -121,9 +157,28 @@ class ComicBrowserScreen : BaseFragment() {
         }
     }
 
+    private fun clearSearchFocus() {
+        binding.comicBrowserToolbar.toolbarSearchText.clearFocus()
+        view?.let {
+            getSystemService(
+                requireContext(),
+                InputMethodManager::class.java
+            )?.hideSoftInputFromWindow(it.windowToken, 0)
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.comicBrowserToolbar.toolbarSearchText.removeTextChangedListener(
+            comicSearchTextWatcher
+        )
+        snackbar?.dismiss()
+        textDebounceJob?.cancel()
+        job.cancel()
         _binding = null
+    }
+
+    private companion object {
+        const val SearchDebounceDelay = 500L
     }
 }

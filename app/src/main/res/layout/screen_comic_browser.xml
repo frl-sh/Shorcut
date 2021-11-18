@@ -14,6 +14,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <include
+            android:id="@+id/comicBrowserToolbar"
+            layout="@layout/toolbar_main" />
+
         <TextView
             android:id="@+id/comicTitle"
             android:layout_width="0dp"
@@ -24,14 +28,14 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/comicBrowserToolbar"
             tools:text="ComiC Title" />
 
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/comicLoading"
             android:layout_width="0dp"
             android:layout_height="2dp"
-            android:indeterminateTint="@color/design_default_color_primary"
+            android:indeterminateTint="?colorPrimary"
             android:visibility="gone"
             android:indeterminate="true"
             android:layout_marginTop="@dimen/default_margin"
@@ -90,9 +94,9 @@
             style="@style/Widget.AppCompat.Button.Borderless"
             android:foreground="?selectableItemBackground"
             android:text="@string/share"
-            android:textColor="@color/design_default_color_primary"
+            android:textColor="?colorPrimary"
             app:backgroundTint="@android:color/transparent"
-            app:iconTint="@color/design_default_color_primary"
+            app:iconTint="?colorPrimary"
             android:layout_marginEnd="@dimen/default_margin"/>
 
         <TextView

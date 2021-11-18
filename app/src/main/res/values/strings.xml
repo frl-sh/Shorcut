@@ -6,4 +6,5 @@
     <string name="intent_failure_message">There is no app to open this url</string>
     <string name="share">Share</string>
     <string name="retry">Retry</string>
+    <string name="search_hint">Search comic by number</string>
 </resources>
