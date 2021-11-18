@@ -11,4 +11,4 @@ Here are some bullets that explain the main parts of this project more:
 - Also Glide has been used to load comics images.
 - There are some unit-tests for the main logics of the ViewModel.(It's Junit based, and for mocking I've got help from mockK)
 
-There can be some other features in the future like search through comics by their text, and getting notification when a new comic is published, also share, and favorite comics which are not considered necessary for the MVP version.
+There can be some other features in the future like search through comics by their text, and getting notification when a new comic is published, also favorite comics which are not considered necessary for the MVP version.
