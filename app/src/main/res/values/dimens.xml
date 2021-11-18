@@ -8,4 +8,6 @@
     <dimen name="default_radius">5dp</dimen>
     <dimen name="screen_bottom_margin">24dp</dimen>
     <dimen name="default_half_margin">8dp</dimen>
+    <dimen name="toolbar_height">64dp</dimen>
+    <dimen name="toolbar_icon_size">64dp</dimen>
 </resources>

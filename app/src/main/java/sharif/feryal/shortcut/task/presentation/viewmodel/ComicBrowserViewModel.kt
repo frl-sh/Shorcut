@@ -108,6 +108,10 @@ class ComicBrowserViewModel(
         return true
     }
 
+    fun searchQueryRequested(comicNumberQuery: Int) {
+        fetchComic(comicNumberQuery)
+    }
+
     private companion object {
         const val MIN_COMIC_NUMBER = 0
     }
