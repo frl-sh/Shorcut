@@ -3,11 +3,7 @@ package sharif.feryal.shortcut.task.presentation.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import sharif.feryal.shortcut.task.core.base.BaseViewModel
-import sharif.feryal.shortcut.task.core.models.ComicRequest
-import sharif.feryal.shortcut.task.core.models.Failure
-import sharif.feryal.shortcut.task.core.models.LoadableData
-import sharif.feryal.shortcut.task.core.models.SingleLiveEvent
-import sharif.feryal.shortcut.task.core.models.fold
+import sharif.feryal.shortcut.task.core.models.*
 import sharif.feryal.shortcut.task.domain.Comic
 import sharif.feryal.shortcut.task.domain.interactor.GetComicUseCase
 
@@ -38,6 +34,10 @@ class ComicBrowserViewModel(
         fetchComic()
     }
 
+    fun retryRequested(number: Int?) {
+        fetchComic(number)
+    }
+
     private fun fetchComic(number: Int? = null) {
         launch {
             _dataStatus.value = LoadableData.Loading
@@ -50,7 +50,7 @@ class ComicBrowserViewModel(
                 },
                 onFailure = {
                     _dataStatus.value = LoadableData.None
-                    _failure.value = Failure(it)
+                    _failure.value = Failure(it, Retry(number))
                 })
         }
     }

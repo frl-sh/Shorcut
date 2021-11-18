@@ -36,7 +36,9 @@ class ComicBrowserViewModelTest {
         anyNumber,
         "anyTitle",
         "anyImageUrl",
-        anyDate
+        anyDate,
+        "anyText",
+        "anyText"
     )
 
     private val viewModel: ComicBrowserViewModel by lazy {
