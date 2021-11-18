@@ -2,4 +2,7 @@
     <string name="app_name">ComiC</string>
     <string name="failure_message">something is wrong</string>
     <string name="comic_date">Date: %s/%s/%s</string>
+    <string name="comic_website_url">https://xkcd.com/%d/</string>
+    <string name="intent_failure_message">There is no app to open this url</string>
+    <string name="share">Share</string>
 </resources>

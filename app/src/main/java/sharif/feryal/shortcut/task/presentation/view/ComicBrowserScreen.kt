@@ -12,6 +12,7 @@ import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import sharif.feryal.shortcut.task.R
 import sharif.feryal.shortcut.task.core.base.BaseFragment
+import sharif.feryal.shortcut.task.core.extension.openUrl
 import sharif.feryal.shortcut.task.core.imageproccess.ImageLoader
 import sharif.feryal.shortcut.task.core.models.LoadableData
 import sharif.feryal.shortcut.task.databinding.ScreenComicBrowserBinding
@@ -94,11 +95,22 @@ class ComicBrowserScreen : BaseFragment() {
 
         ImageLoader.loadImage(comicImage, comic.imageUrl)
 
+        setComicListeners(comic)
+    }
+
+    private fun ScreenComicBrowserBinding.setComicListeners(comic: Comic) {
         comicImage.setOnClickListener {
             findNavController().navigate(
                 R.id.comicDescriptionScreen,
                 ComicDescriptionScreenArgs(comic).toBundle()
             )
+        }
+        comicShareButton.setOnClickListener {
+            requireContext().openUrl(
+                getString(R.string.comic_website_url, comic.number)
+            ).takeIf { intent -> intent == null }?.let {
+                Snackbar.make(root, getString(R.string.intent_failure_message), LENGTH_SHORT).show()
+            }
         }
     }
 
