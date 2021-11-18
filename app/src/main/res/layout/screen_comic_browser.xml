@@ -24,12 +24,25 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_margin"
             android:gravity="center"
-            android:textSize="@dimen/text_size_header"
+            android:textSize="@dimen/text_size_title"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/comicBrowserToolbar"
             tools:text="ComiC Title" />
+
+        <TextView
+            android:id="@+id/comicNumber"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_half_margin"
+            android:gravity="center"
+            android:textStyle="italic"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/comicTitle"
+            tools:text="@string/comic_number" />
 
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/comicLoading"
@@ -42,7 +55,7 @@
             app:indeterminateAnimationType="disjoint"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/comicTitle"
+            app:layout_constraintTop_toBottomOf="@id/comicNumber"
             tools:visibility="visible" />
 
         <ImageView

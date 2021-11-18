@@ -126,6 +126,7 @@ class ComicBrowserScreen : BaseFragment() {
 
     private fun ScreenComicBrowserBinding.setComicData(comic: Comic) {
         comicTitle.text = comic.title
+        comicNumber.text = getString(R.string.comic_number, comic.number)
         comicDate.text = getString(
             R.string.comic_date,
             comic.date.month,

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="default_margin">16dp</dimen>
-    <dimen name="text_size_header">32sp</dimen>
     <dimen name="text_size_title">24sp</dimen>
     <dimen name="comic_image_height">400dp</dimen>
     <dimen name="comic_button_width">40dp</dimen>
