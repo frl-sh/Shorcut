@@ -6,7 +6,8 @@ sealed class LoadableData<out T> {
     data class Loaded<T>(val data: T): LoadableData<T>()
 }
 
-data class Failure(val throwable: Throwable)
+data class Failure(val throwable: Throwable, val retry: Retry? = null)
+data class Retry(val comicNumber: Int?)
 
 sealed class ComicRequest {
     data class Next(val nextNumber: Int): ComicRequest()

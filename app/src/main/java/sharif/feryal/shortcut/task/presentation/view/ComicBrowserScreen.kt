@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isInvisible
-import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
 import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -65,20 +65,27 @@ class ComicBrowserScreen : BaseFragment() {
 
             dataStatus.subscribe { status ->
                 with(binding) {
-                    comicLoading.isVisible = status is LoadableData.Loading
-                    comicImage.isInvisible = status !is LoadableData.Loaded
+                    comicLoading.isInvisible = status !is LoadableData.Loading
                     (status as? LoadableData.Loaded)?.data?.let { comic ->
                         setComicData(comic)
                     }
                 }
             }
 
-            failure.subscribe {
+            failure.subscribe { failure ->
+                val retryObject = failure.retry
+                val messageDuration = if (retryObject == null) LENGTH_SHORT else LENGTH_INDEFINITE
                 Snackbar.make(
                     binding.root,
-                    it.throwable.message ?: getString(R.string.failure_message),
-                    LENGTH_SHORT
-                ).show()
+                    failure.throwable.message ?: getString(R.string.failure_message),
+                    messageDuration
+                ).apply {
+                    retryObject?.let { retry ->
+                        setAction(getString(R.string.retry)) {
+                            viewModel.retryRequested(retry.comicNumber)
+                        }
+                    }
+                }.show()
             }
         }
     }

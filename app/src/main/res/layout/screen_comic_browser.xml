@@ -27,15 +27,30 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="ComiC Title" />
 
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/comicLoading"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:indeterminateTint="@color/design_default_color_primary"
+            android:visibility="gone"
+            android:indeterminate="true"
+            android:layout_marginTop="@dimen/default_margin"
+            app:indeterminateAnimationType="disjoint"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/comicTitle"
+            tools:visibility="visible" />
+
         <ImageView
             android:id="@+id/comicImage"
             android:layout_width="0dp"
             android:layout_height="@dimen/comic_image_height"
-            android:layout_marginTop="@dimen/default_margin"
             android:scaleType="fitCenter"
             app:layout_constraintEnd_toEndOf="parent"
+            android:padding="@dimen/default_half_margin"
+            android:foreground="?selectableItemBackground"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/comicTitle" />
+            app:layout_constraintTop_toBottomOf="@id/comicLoading" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/prevComicButton"
@@ -62,18 +77,6 @@
             app:layout_constraintBottom_toBottomOf="@id/comicImage"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/comicImage" />
-
-        <ProgressBar
-            android:id="@+id/comicLoading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminateTint="@color/design_default_color_primary"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@id/comicImage"
-            app:layout_constraintEnd_toEndOf="@id/comicImage"
-            app:layout_constraintStart_toStartOf="@id/comicImage"
-            app:layout_constraintTop_toTopOf="@id/comicImage"
-            tools:visibility="visible" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/comicShareButton"
