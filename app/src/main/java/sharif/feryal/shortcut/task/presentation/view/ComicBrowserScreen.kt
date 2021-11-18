@@ -15,7 +15,7 @@ import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import sharif.feryal.shortcut.task.R
 import sharif.feryal.shortcut.task.core.base.BaseFragment
-import sharif.feryal.shortcut.task.core.extension.openUrl
+import sharif.feryal.shortcut.task.core.extension.sendUrl
 import sharif.feryal.shortcut.task.core.imageproccess.ImageLoader
 import sharif.feryal.shortcut.task.core.models.LoadableData
 import sharif.feryal.shortcut.task.databinding.ScreenComicBrowserBinding
@@ -126,6 +126,7 @@ class ComicBrowserScreen : BaseFragment() {
 
     private fun ScreenComicBrowserBinding.setComicData(comic: Comic) {
         comicTitle.text = comic.title
+        comicNumber.text = getString(R.string.comic_number, comic.number)
         comicDate.text = getString(
             R.string.comic_date,
             comic.date.month,
@@ -149,7 +150,7 @@ class ComicBrowserScreen : BaseFragment() {
         }
         comicShareButton.setOnClickListener {
             clearSearchFocus()
-            requireContext().openUrl(
+            requireContext().sendUrl(
                 getString(R.string.comic_website_url, comic.number)
             ).takeIf { intent -> intent == null }?.let {
                 Snackbar.make(root, getString(R.string.intent_failure_message), LENGTH_SHORT).show()

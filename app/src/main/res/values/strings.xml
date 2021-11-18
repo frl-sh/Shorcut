@@ -7,4 +7,5 @@
     <string name="share">Share</string>
     <string name="retry">Retry</string>
     <string name="search_hint">Search comic by number</string>
+    <string name="comic_number">Comic number: %d</string>
 </resources>
