@@ -6,6 +6,7 @@ import sharif.feryal.shortcut.task.core.base.BaseViewModel
 import sharif.feryal.shortcut.task.core.models.*
 import sharif.feryal.shortcut.task.domain.Comic
 import sharif.feryal.shortcut.task.domain.interactor.GetComicUseCase
+import sharif.feryal.shortcut.task.presentation.models.ComicRequest
 
 class ComicBrowserViewModel(
     private val getComicUseCase: GetComicUseCase
